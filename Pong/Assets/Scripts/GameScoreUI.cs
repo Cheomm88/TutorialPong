@@ -16,7 +16,12 @@ public class GameScoreUI : MonoBehaviour
     float animationTime = 0.2f;
     [SerializeField]
     LeanTweenType animationCurve;
-
+    
+    [Header("Animacion Texto Gol")]
+    [SerializeField]
+    float textPosition = 1300f;
+    [SerializeField]
+    GameObject textLabelGoal;
     //restear goles
     public void ResetScore()
     {
@@ -31,17 +36,30 @@ public class GameScoreUI : MonoBehaviour
         goalsPlayerOne++;
         UpdateScoreText();
         //Animar texto de gol.
+        AnimateGoalText(1, animationTime);
     }
     public void GoalScoredPlayerTwo()
     {
         goalsPlayerTwo++;
         UpdateScoreText();
         //Animar texto de gol.
+        AnimateGoalText(2, animationTime);
     }
 
-    void AnimateGoalText(Vector3 initialPosition, Vector3 endPosition, float animationDuration)
+    void AnimateGoalText(int player, float animationDuration)
     {
+        float textInitialPosition = 0f;
+        if (player == 1)
+        {
+            textInitialPosition = textPosition;
+        }
+        else
+        {
+            textInitialPosition = -textPosition;
+        }
 
+        LeanTween.moveLocalX(textLabelGoal, textInitialPosition, 0.0f);
+        LeanTween.moveLocalX(textLabelGoal, 0.0f, 0.12f);
 
     }
     //mosrtar
