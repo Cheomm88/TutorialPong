@@ -22,6 +22,7 @@ public class GameScoreUI : MonoBehaviour
     float textPosition = 1300f;
     [SerializeField]
     GameObject textLabelGoal;
+    float endAnimationPosition;
     //restear goles
     public void ResetScore()
     {
@@ -36,30 +37,50 @@ public class GameScoreUI : MonoBehaviour
         goalsPlayerOne++;
         UpdateScoreText();
         //Animar texto de gol.
-        AnimateGoalText(1, animationTime);
+        AnimateGoalText(1);
     }
     public void GoalScoredPlayerTwo()
     {
         goalsPlayerTwo++;
         UpdateScoreText();
         //Animar texto de gol.
-        AnimateGoalText(2, animationTime);
+        AnimateGoalText(2);
     }
 
-    void AnimateGoalText(int player, float animationDuration)
+    void AnimateGoalText(int player)
     {
         float textInitialPosition = 0f;
         if (player == 1)
         {
-            textInitialPosition = textPosition;
+            textInitialPosition = -textPosition;           
         }
         else
         {
-            textInitialPosition = -textPosition;
+            textInitialPosition = textPosition;
         }
 
+        endAnimationPosition -= textInitialPosition;
+
+        //Colocar en el lado del que ha marcado
         LeanTween.moveLocalX(textLabelGoal, textInitialPosition, 0.0f);
-        LeanTween.moveLocalX(textLabelGoal, 0.0f, 0.12f);
+        //Colocarlo en el centro.
+        LeanTween.moveLocalX(textLabelGoal, 0.0f, 0.15f).setOnComplete(EndAnimation);
+
+    }
+
+    void EndAnimation()
+    {
+        //Hacemos una "pausa"
+        LeanTween.scale(textLabelGoal, Vector3.one, 0.3f).setOnComplete(()=> {
+            //Escalamos a más grande
+            LeanTween.scale(textLabelGoal, Vector3.one * 1.5f, 0.75f).setEaseInBounce().setOnComplete(() =>
+            {
+                //Se marcha
+                LeanTween.moveLocalX(textLabelGoal, endAnimationPosition, 0.75f).setEaseInCirc();
+                LeanTween.scale(textLabelGoal, Vector3.one, 0f);
+
+            });
+        });
 
     }
     //mosrtar
