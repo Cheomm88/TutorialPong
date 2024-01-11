@@ -12,6 +12,11 @@ public class GameScoreUI : MonoBehaviour
 
     public TextMeshProUGUI scoreText;
 
+    [SerializeField]
+    float animationTime = 0.2f;
+    [SerializeField]
+    LeanTweenType animationCurve;
+
     //restear goles
     public void ResetScore()
     {
@@ -25,16 +30,25 @@ public class GameScoreUI : MonoBehaviour
     {
         goalsPlayerOne++;
         UpdateScoreText();
+        //Animar texto de gol.
     }
     public void GoalScoredPlayerTwo()
     {
         goalsPlayerTwo++;
         UpdateScoreText();
+        //Animar texto de gol.
     }
 
+    void AnimateGoalText(Vector3 initialPosition, Vector3 endPosition, float animationDuration)
+    {
+
+
+    }
     //mosrtar
     void UpdateScoreText()
     {
+        LeanTween.scale(scoreText.gameObject, Vector3.zero, 0.0f);
+        LeanTween.scale(scoreText.gameObject, Vector3.one, animationTime).setEase(animationCurve);
         scoreText.text = goalsPlayerOne + " : " + goalsPlayerTwo;
     }
 
