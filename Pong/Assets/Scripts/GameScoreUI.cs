@@ -78,7 +78,6 @@ public class GameScoreUI : MonoBehaviour
                 //Se marcha
                 LeanTween.moveLocalX(textLabelGoal, endAnimationPosition, 0.75f).setEaseInCirc();
                 LeanTween.scale(textLabelGoal, Vector3.one, 0f);
-
             });
         });
 
